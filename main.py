@@ -100,6 +100,8 @@ def make_line(df, unit, stat):
         df_data = df[df.UNIT == unit]
     else:
         df_data = df.copy()
+    df_data['AC_TYPE'] = df_data['AC_TYPE'].astype(str)
+    df_data['UNIT'] = df_data['UNIT'].astype(str)
     y = df_map[stat]
     df_data = df_data.fillna(0)
     c = alt.Chart(df_data).mark_line().encode(
@@ -113,7 +115,8 @@ def make_bar(df, unit):
         count = df[df.UNIT == unit]
     else:
         count = df.copy()
-    count['AC_TYPE'] = count['AC_TYPE'].fillna('N/A')
+
+    count['AC_TYPE'] = count['AC_TYPE'].astype(str).fillna('N/A')
     count['AC_DISPATCHED'] = count['AC_DISPATCHED'].fillna(0)
     count = count.groupby('AC_TYPE').AC_DISPATCHED.sum()
     count = pd.DataFrame({
@@ -125,5 +128,6 @@ def make_bar(df, unit):
 
 if __name__ == '__main__':
     run_app()
+
 
 
